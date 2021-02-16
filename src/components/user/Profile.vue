@@ -63,16 +63,15 @@ export default {
   },
   mounted: async function(){
     this.user = await this.getData();
-    // console.log(this.user.followers.map(item => item.follower_id).includes(this.$store.state.user.id))
   },
   methods: {
     getData: function(){
-      return axios.post('/api/profile', {username: this.username})
+      return axios.post('/api/users/profile', {username: this.username})
           .then(res => res.data)
           .catch(error => {
             if(error.response.status === 401){
               this.$router.push({name: 'NotAllowed', params: {message: error.response.data.message }});
-            } else if(error.response.status === 500){
+            } else if(error.response.status === 404){
               this.$router.push({name: 'NotAllowed', params: {message: 'Ресурсот кој го баравте не постои!' }});
             }
           });

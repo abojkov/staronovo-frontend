@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5>Побарувања</h5><hr/>
+    <h5>Продажба</h5><hr/>
     <img id="loading" src="@/assets/imgs/loading.gif" alt="" v-if="orders === undefined"/>
     <div v-if="orders !== undefined">
       <div class="row" v-if="orders.length === 0">

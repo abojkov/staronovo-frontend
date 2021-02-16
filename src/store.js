@@ -15,8 +15,8 @@ export const store = createStore({
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
                 this.changeLoggedInUser();
             },
-            async logoutUser(){
-                await axios.post('/api/auth/logout').then(res => {
+            logoutUser(){
+                axios.post('/api/auth/logout').then(res => {
                     console.log(res.data);
                 }).catch(error => {
                     console.log(error.response);

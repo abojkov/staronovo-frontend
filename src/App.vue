@@ -10,7 +10,7 @@
           <router-link class="link" to="/timeline" v-if="$store.state.user !== null">Почетна</router-link>
           <router-link class="link" to="/categories" v-if="$store.state.user !== null && $store.state.user.role.role === 'ROLE_ADMIN'">Категории</router-link>
           <router-link class="link" to="/purchases" v-if="$store.state.user !== null && $store.state.user.role.role === 'ROLE_USER'">Мои нарачки</router-link>
-          <router-link class="link" to="/orders" v-if="$store.state.user !== null && $store.state.user.role.role === 'ROLE_USER'">Побарувања</router-link>
+          <router-link class="link" to="/orders" v-if="$store.state.user !== null && $store.state.user.role.role === 'ROLE_USER'">Продажба</router-link>
           <router-link v-if="$store.state.user !== null" class="link" :to="'/profile/' + $store.state.user.username" :key="$router.fullPath">Мој профил</router-link>
           <router-link class="link" to="/about">За апликацијата</router-link>
         </div>

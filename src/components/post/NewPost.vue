@@ -28,7 +28,7 @@
                           <p class="error" id="error-image"></p>
                         </div>
                         <div class="form-group">
-                          <input v-model="description" type="email" class="form-control" placeholder="* Опис"/>
+                          <textarea v-model="description" type="email" class="form-control" placeholder="* Опис"></textarea>
                           <p class="error" id="error-description"></p>
                         </div>
                         <div class="form-group">

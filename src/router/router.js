@@ -43,7 +43,6 @@ const routes_users = [
         }
     }
 ];
-
 const routes_purchases = [
     {
         path: '/purchases',
@@ -56,7 +55,6 @@ const routes_purchases = [
         component: Orders
     },
 ];
-
 const routes_home = [
     {
         path: '/not-allowed',
@@ -114,7 +112,6 @@ const routes_home = [
         }
     }
 ]
-
 const routes = [
     {
         path: "/",
