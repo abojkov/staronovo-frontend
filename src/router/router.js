@@ -12,6 +12,15 @@ import About from "@/components/home/About";
 import Timeline from "@/components/timeline/Timeline";
 import Purchases from "@/components/purchase/Purchases";
 import Orders from "@/components/order/Orders";
+import Favourite from "@/components/Favourite";
+
+const routes_favourite = [
+    {
+        path: '/favourite',
+        name: 'Favourite',
+        component: Favourite
+    }
+];
 
 const routes_timeline = [
     {
@@ -116,7 +125,15 @@ const routes = [
     {
         path: "/",
         name: 'VHome',
-        component: VHome
+        component: VHome,
+        // eslint-disable-next-line no-unused-vars
+        beforeEnter(to, from, next){
+            if(store.state.user === null)
+                next();
+            else if(store.state.user.role.role !== 'ROLE_ADMIN')
+                next('/timeline');
+            else next();
+        }
     },
     {
         path: '/categories',
@@ -137,6 +154,7 @@ routes_users.forEach(route => routes.push(route));
 routes_home.forEach(route => routes.push(route));
 routes_timeline.forEach(route => routes.push(route));
 routes_purchases.forEach(route => routes.push(route));
+routes_favourite.forEach(route => routes.push(route));
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),

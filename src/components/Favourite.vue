@@ -1,14 +1,13 @@
 <template>
   <div>
-    <h5>Почетна</h5><hr/>
+    <h5>Омилени</h5><hr/>
     <img id="loading" src="@/assets/imgs/loading.gif" alt="" v-if="posts === undefined"/>
     <div v-if="posts !== undefined">
       <div class="row" v-if="posts.length === 0">
         <div class="col-sm-3"/>
         <div class="col-sm-6">
           <div class="alert alert-info">
-            Не постојат производи кои се на залиха од луѓето кои ги следите! Зголемете ја вашата мрежа, заследете поголем број на корисници
-            и уживајте во производите кои тие ги нудат!
+            Не постојат производи кои ви се омилени!
           </div>
         </div>
         <div class="col-sm-3"/>
@@ -23,7 +22,7 @@ import Post from "@/components/post/Post";
 import axios from "axios";
 
 export default {
-  name: "Timeline",
+  name: "Favourite",
   components: {Post},
   data(){
     return{
@@ -31,18 +30,18 @@ export default {
     }
   },
   mounted() {
-    this.getTimeline();
+    this.getFavourites();
   },
   methods: {
-    getTimeline(){
-      axios.get('/api/users/timeline')
+    getFavourites(){
+      axios.get('/api/favourites')
           .then(res => {
             this.posts = res.data;
           }).catch(error => {
-            if(error.response.status === 401){
-              this.$router.push({name: 'NotAllowed'});
-            }
-          });
+        if(error.response.status === 401){
+          this.$router.push({name: 'NotAllowed'});
+        }
+      });
     }
   }
 }

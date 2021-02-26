@@ -61,7 +61,7 @@ export default {
       axios.post('/api/auth/login', loginUser)
           .then(res => {
             this.$store.state.logInUser(res.data.token);
-            self.$router.push('/timeline');
+            setTimeout(function(){self.$router.push('/');}, 1000)
           })
           .catch(error => {
             if(error.response.status === 422){

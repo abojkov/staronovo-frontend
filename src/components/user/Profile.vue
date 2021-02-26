@@ -19,8 +19,7 @@
                 <button class="btn btn-sm btn-outline-primary w-100" v-if="!doesLoggedInFollowThisProfile()" @click="toggleFollow">Заследи</button>
                 <div style="width: 100%;">
               <span v-if="doesLoggedInFollowThisProfile()">
-                <span style="font-size: 0.7rem">√ Ја следиш личноста</span>
-                <button class="btn btn-sm btn-danger w-100" @click="toggleFollow">Одследи</button>
+                <button class="btn btn-sm btn-danger w-100" @click="toggleFollow"><i class="fa fa-check-circle" style="float: left; margin-top: 4px;"></i>Отследи</button>
               </span>
                 </div>
               </div>

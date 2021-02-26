@@ -3,26 +3,37 @@
     <div id="nav" style="">
       <div class="row align-items-center">
         <div class="col-sm-2">
-          <img src="../public/logo_light.png" style="width: 20%; margin-right: 25px;"/> СтароНово
+          <a href="/" style="text-decoration: none; color: white;"><img src="../public/logo_light.png" style="width: 20%; margin-right: 25px;"/> СтароНово</a>
         </div>
-        <div class="col-sm-8">
-          <router-link class="link" to="/" v-if="$store.state.user === null">Почетна</router-link>
-          <router-link class="link" to="/timeline" v-if="$store.state.user !== null">Почетна</router-link>
-          <router-link class="link" to="/categories" v-if="$store.state.user !== null && $store.state.user.role.role === 'ROLE_ADMIN'">Категории</router-link>
-          <router-link class="link" to="/purchases" v-if="$store.state.user !== null && $store.state.user.role.role === 'ROLE_USER'">Мои нарачки</router-link>
-          <router-link class="link" to="/orders" v-if="$store.state.user !== null && $store.state.user.role.role === 'ROLE_USER'">Продажба</router-link>
-          <router-link v-if="$store.state.user !== null" class="link" :to="'/profile/' + $store.state.user.username" :key="$router.fullPath">Мој профил</router-link>
+        <div class="col-sm-7">
+          <router-link class="link" to="/">Почетна</router-link>
           <router-link class="link" to="/about">За апликацијата</router-link>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-3">
           <div v-if="$store.state.user === null">
             <router-link to="/login" class="btn btn-sm btn-outline-primary mr-3"><i class="fa fa-sign-in" aria-hidden="true"></i> Најава</router-link>
             <router-link to="/register" class="btn btn-sm btn-outline-primary"><i class="fa fa-sign-in" aria-hidden="true"></i> Регистрација</router-link>
           </div>
           <div v-if="$store.state.user !== null">
-            <form @submit="searchUser">
-              <input v-model="search" placeholder="Барај..." class="mr-2"/>
-              <router-link to="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i></router-link>
+            <div class="dropdown show" style="display: inline-block;">
+              <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user"></i>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <router-link v-if="$store.state.user !== null" class="dropdown-item" :to="'/profile/' + $store.state.user.username" :key="$router.fullPath">Мој профил</router-link>
+
+                <div class="dropdown-divider"></div>
+                <router-link class="dropdown-item" to="/purchases" v-if="$store.state.user !== null && $store.state.user.role.role === 'ROLE_USER'">Мои нарачки</router-link>
+                <router-link class="dropdown-item" to="/orders" v-if="$store.state.user !== null && $store.state.user.role.role === 'ROLE_USER'">Продажба</router-link>
+                <router-link class="dropdown-item" to="/favourite" v-if="$store.state.user !== null && $store.state.user.role.role === 'ROLE_USER'"><i class="fa fa-bookmark" aria-hidden="true"></i>  Омилени</router-link>
+                <router-link class="dropdown-item" to="/categories" v-if="$store.state.user !== null && $store.state.user.role.role === 'ROLE_ADMIN'">Категории</router-link>
+
+                <div class="dropdown-divider"></div>
+                <router-link to="/logout" class="dropdown-item"><i class="fa fa-sign-out" aria-hidden="true"></i> Одјава</router-link>
+              </div>
+            </div>
+            <form @submit="searchUser" style="display: inline-block;">
+              <input v-model="search" placeholder="Барај..." class="ml-2"/>
               <button hidden/>
             </form>
           </div>

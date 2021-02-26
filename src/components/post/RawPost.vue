@@ -19,7 +19,7 @@
                   </div>
                   <ul class="details">
                     <li class="date">{{ post['datetime_posted'] }}</li>
-                    <li class="date" v-if="post['seller_username'] !== undefined"><span>{{ post['seller_username'] }}</span></li>
+                    <li v-if="post['seller_username'] !== undefined"><i class="fa fa-user"></i> <span>{{ post['seller_username'] }}</span></li>
                   </ul>
                 </div>
                 <div class="description">

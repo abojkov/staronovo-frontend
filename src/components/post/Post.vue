@@ -6,7 +6,7 @@
       </div>
       <ul class="details">
         <li class="date">{{ post['datetime_posted'] }}</li>
-        <li class="date" v-if="post['seller_username'] !== undefined"><span id="link" @click="openProfile">{{ post['seller_username'] }}</span></li>
+        <li v-if="post['seller_username'] !== undefined"><i class="fa fa-user"></i> <span id="link" @click="openProfile">{{ post['seller_username'] }}</span></li>
       </ul>
     </div>
     <div class="description">
@@ -36,6 +36,9 @@
 
         </div>
         <div v-if="!isLoggedInUserAuthor" class="mt-3">
+          <button style="float: left;" class="btn bubbly-button" :class="'bubbly-button'+post['id']" @click="toggleFave">
+            <i style="color: deeppink" class="fa" v-bind:class="post['is_favourite'] ? 'fa-heart' : 'fa-heart-o'"></i>
+          </button>
           <div v-if="post['quantity_left'] > 0">
             <input id="qty" type="number" min="1" v-model="quantity" :max="post['quantity_left']" class="form-control form-control-sm">
             <a href="#" @click="buy">Купи</a>
@@ -59,6 +62,34 @@ export default {
   name: "Post",
   props: ["post"],
   components: {DialogInfo},
+  mounted() {
+    var animateButton = function(e) {
+      e.preventDefault;
+
+      if(!e.target.classList.contains('bubbly-button')){
+        e.target.parentNode.classList.remove('animate');
+
+        e.target.parentNode.classList.add('animate');
+        setTimeout(function(){
+          e.target.parentNode.classList.remove('animate');
+        },700);
+      }
+      else {
+        e.target.classList.remove('animate');
+
+        e.target.classList.add('animate');
+        setTimeout(function(){
+          e.target.classList.remove('animate');
+        },700);
+      }
+    };
+
+    var bubblyButtons = document.getElementsByClassName("bubbly-button"+this.post['id']);
+
+    for (var i = 0; i < bubblyButtons.length; i++) {
+      bubblyButtons[0].addEventListener('click', animateButton, false);
+    }
+  },
   data(){
     return{
       quantity: 1
@@ -122,12 +153,139 @@ export default {
       }).catch(() => {
         this.$refs.dialogTrigger.click();
       });
+    },
+    toggleFave(){
+      var bodyData ={
+        post_id: this.post.id
+      }
+
+      axios.post('/api/favourites/toggle', bodyData).then(() => {
+        this.post['is_favourite'] = !this.post['is_favourite'];
+      }).catch(() => {
+        this.$refs.dialogTrigger.click();
+      });
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
+$fuschia: #ff0081;
+$button-bg: $fuschia;
+$button-text-color: #fff;
+$baby-blue: #f8faff;
+
+.bubbly-button {
+  font-family: "Helvetica", "Arial", sans-serif;
+  display: inline-block;
+  font-size: 1em;
+  -webkit-appearance: none;
+  appearance: none;
+  color: $button-text-color;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: transform ease-in 0.1s, box-shadow ease-in 0.25s;
+  box-shadow: 0 2px 25px;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:before,
+  &:after {
+    position: absolute;
+    content: "";
+    display: block;
+    width: 140%;
+    height: 100%;
+    left: -20%;
+    z-index: -1000;
+    transition: all ease-in-out 0.5s;
+    background-repeat: no-repeat;
+  }
+
+  &:before {
+    display: none;
+    top: -75%;
+    background-image: radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, transparent 20%, $button-bg 20%, transparent 30%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, transparent 10%, $button-bg 15%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%);
+    background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%,
+    15% 15%, 10% 10%, 18% 18%;
+    //background-position: 0% 80%, -5% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%, 50% 50%, 65% 20%, 85% 30%;
+  }
+
+  &:after {
+    display: none;
+    bottom: -75%;
+    background-image: radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, transparent 10%, $button-bg 15%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%),
+    radial-gradient(circle, $button-bg 20%, transparent 20%);
+    background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 10% 10%,
+    20% 20%;
+    //background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%, 40% 90%, 55% 90%, 70% 90%;
+  }
+
+  &:active {
+    transform: scale(0.7);
+  }
+
+  &.animate {
+    &:before {
+      display: block;
+      animation: topBubbles ease-in-out 1s forwards;
+    }
+    &:after {
+      display: block;
+      animation: bottomBubbles ease-in-out 1s forwards;
+    }
+  }
+}
+
+@keyframes topBubbles {
+  0% {
+    background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
+    40% 90%, 55% 90%, 70% 90%;
+  }
+  50% {
+    background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
+    50% 50%, 65% 20%, 90% 30%;
+  }
+  100% {
+    background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
+    50% 40%, 65% 10%, 90% 20%;
+    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+}
+
+@keyframes bottomBubbles {
+  0% {
+    background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
+    70% -10%, 70% 0%;
+  }
+  50% {
+    background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
+    105% 0%;
+  }
+  100% {
+    background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
+    110% 10%;
+    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+}
+
   .error{
     text-align: right;
     color: red;
